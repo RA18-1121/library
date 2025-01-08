@@ -2,15 +2,7 @@ function Book(title, author, pages, isRead){
     this.title = title;
     this.author = author;
     this.pages = pages;
-    this.isRead = isRead;
-    this.info = () => {
-        if(isRead.toLowerCase() === "yes")
-        {
-            return title + " by " + author + ", " + pages + " pages, read.";
-        }
-        else
-            return title + " by " + author + ", " + pages + " pages, not read yet."
-    }
+    this.isRead = isRead.toLowerCase();
 }
 
 const myLibrary = [];
@@ -18,6 +10,13 @@ const myLibrary = [];
 const addBookToLibrary = (title, author, pages, isRead) => {
     let book = new Book(title, author, pages, isRead);
     myLibrary.push(book);
+}
+
+const toggleRead = (index) => {
+    if(myLibrary[index].isRead === "yes")
+        myLibrary[index].isRead = "no";
+    else
+        myLibrary[index].isRead = "yes";
 }
 
 const table = document.querySelector("table");
@@ -45,6 +44,7 @@ const displayBooks = () => {
         let pages = document.createElement("td");
         let isRead = document.createElement("td");
         let remove = document.createElement("button");
+        let toggle = document.createElement("button");
 
         serial.textContent = `${j + 1}`;
         title.textContent = myLibrary[i].title;
@@ -52,6 +52,7 @@ const displayBooks = () => {
         pages.textContent = myLibrary[i].pages;
         isRead.textContent = myLibrary[i].isRead;
         remove.textContent = "Remove";
+        toggle.textContent = "Toggle";
 
         remove.addEventListener("click", (event) => {
             let index = event.target.parentNode.getAttribute("class").at(-1);
@@ -59,13 +60,16 @@ const displayBooks = () => {
             displayBooks();
         })
 
-        row.append(serial, title, author, pages, isRead, remove);
+        toggle.addEventListener("click", (event) => {
+            toggleRead(event.target.parentNode.getAttribute("class").at(-1));
+            displayBooks();
+        })
+
+        row.append(serial, title, author, pages, isRead, remove, toggle);
         body.appendChild(row);
         j++;
     }
 }
-
-displayBooks();
 
 const form_container = document.querySelector(".form-container");
 
