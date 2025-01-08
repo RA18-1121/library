@@ -20,11 +20,6 @@ const addBookToLibrary = (title, author, pages, isRead) => {
     myLibrary.push(book);
 }
 
-addBookToLibrary("first", "me", 295, "yes");
-addBookToLibrary("second", "you", 592, "no");
-console.log(myLibrary[0].info());
-console.log(myLibrary[1].info());
-
 const table = document.querySelector("table");
 const last = document.querySelector(".last-default");
 const body = document.querySelector("tbody");
@@ -35,24 +30,38 @@ const displayBooks = () => {
     {
         body.removeChild(body.lastChild);
     }
+    let j = 0;
     for(let i = 0; i < myLibrary.length; i++)
     {
+        if(myLibrary[i] == undefined)
+            continue;
+
         let row = document.createElement("tr");
+        row.classList.add(`class${i}`);
 
         let serial = document.createElement("td");
         let title = document.createElement("td");
         let author = document.createElement("td");
         let pages = document.createElement("td");
         let isRead = document.createElement("td");
+        let remove = document.createElement("button");
 
-        serial.textContent = `${i + 1}`;
+        serial.textContent = `${j + 1}`;
         title.textContent = myLibrary[i].title;
         author.textContent = myLibrary[i].author;
         pages.textContent = myLibrary[i].pages;
         isRead.textContent = myLibrary[i].isRead;
+        remove.textContent = "Remove";
 
-        row.append(serial, title, author, pages, isRead);
+        remove.addEventListener("click", (event) => {
+            let index = event.target.parentNode.getAttribute("class").at(-1);
+            delete myLibrary[index];
+            displayBooks();
+        })
+
+        row.append(serial, title, author, pages, isRead, remove);
         body.appendChild(row);
+        j++;
     }
 }
 
