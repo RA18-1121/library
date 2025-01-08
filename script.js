@@ -20,12 +20,11 @@ const toggleRead = (index) => {
 }
 
 const table = document.querySelector("table");
-const last = document.querySelector(".last-default");
 const body = document.querySelector("tbody");
 
 const displayBooks = () => {
 
-    while(body.lastChild !== last)
+    while(body.lastChild)
     {
         body.removeChild(body.lastChild);
     }
@@ -51,8 +50,8 @@ const displayBooks = () => {
         author.textContent = myLibrary[i].author;
         pages.textContent = myLibrary[i].pages;
         isRead.textContent = myLibrary[i].isRead;
-        remove.textContent = "Remove";
-        toggle.textContent = "Toggle";
+        remove.textContent = "Remove Book";
+        toggle.textContent = "Toggle Read";
 
         remove.addEventListener("click", (event) => {
             let index = event.target.parentNode.getAttribute("class").at(-1);
